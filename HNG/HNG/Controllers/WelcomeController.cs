@@ -6,37 +6,33 @@ namespace HNG.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GreetingsController : ControllerBase
+    public class WelcomeController : ControllerBase
     {
 
 
-        [HttpPost]
-        public IActionResult Intro(Model model)
+        [HttpGet]
+        public IActionResult Intro([FromQuery] Model model)
         {
-            string greeting;
-            // Get the client's IP address
+            string name = model?.Name ?? "Guest";
             string ipAddress = GetServerPrivateIP();
 
-
-            // Get the current hour
-            int hour = DateTime.Now.Hour;
+            // Get the current hour (UTC)
+            int hour = DateTime.UtcNow.Hour;
 
             // Choose greeting based on time
-            if (hour < 12)
+            string greeting = hour switch
             {
-                greeting = "Good morning!";
-            }
-            else if (hour < 17)
-            {
-                greeting = "Good afternoon!";
-            }
-            else
-            {
-                greeting = "Good evening!";
-            }
+                < 12 => "Good morning",
+                < 17 => "Good afternoon",
+                _ => "Good evening"
+            };
 
             // Return a JSON object with greeting and IP address
-            return Ok(new { message = $"{greeting}, {model.Name}", ipAddress = $"Your IP Address is {ipAddress}" });
+            return Ok(new
+            {
+                message = $"{greeting}, {name}!",
+                ipAddress = $"Your Private IP Address is {ipAddress}"
+            });
         }
 
         public static string GetServerPrivateIP()
