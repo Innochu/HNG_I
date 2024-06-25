@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using HNG.Domain.AuthEntities;
+using HNG.Domain.BaseEntities;
+using HNG.Application.Interface;
 
 namespace HNG.Controllers
 {
@@ -7,9 +9,11 @@ namespace HNG.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly IAuthService _authService;
+
         public AuthController(IAuthService authService)
         {
-            
+            _authService = authService;
         }
 
         [HttpPost("Login")]

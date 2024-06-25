@@ -1,10 +1,10 @@
-﻿namespace HNG.Application.Interface
+﻿using HNG.Domain.AuthEntities;
+using HNG.Domain.BaseEntities;
+namespace HNG.Application.Interface
 {
-    public class IAuthService
+    public interface IAuthService
     {
-        public IAuthService()
-        {
-            
-        }
+            Task<ApiResponse<string>> LoginAsync(Login loginDTO);
+        
     }
 }
